@@ -1,19 +1,9 @@
-
- ________  _______   ________  _________  ___  ________ ___    ___ 
-|\   ____\|\  ___ \ |\   __  \|\___   ___\\  \|\  _____\\  \  /  /|
-\ \  \___|\ \   __/|\ \  \|\  \|___ \  \_\ \  \ \  \__/\ \  \/  / /
- \ \  \    \ \  \_|/_\ \   _  _\   \ \  \ \ \  \ \   __\\ \    / / 
-  \ \  \____\ \  \_|\ \ \  \\  \|   \ \  \ \ \  \ \  \_| \/  /  /  
-   \ \_______\ \_______\ \__\\ _\    \ \__\ \ \__\ \__\__/  / /    
-    \|_______|\|_______|\|__|\|__|    \|__|  \|__|\|__|\___/ /     
-                                                      \|___|/      
+  
                                                                    
                                                                    
 
                                                                    
-                                                                   
-
-
+                                                                 
 CertiFy - Roblox Certification System
 CertiFy is a certification management system designed to help Roblox group administrators manage user certifications, track changes with audit logs, and ensure data persistence across games and sessions. With an easy-to-use interface, CertiFy offers a secure and transparent way to handle certifications within your group.
 
