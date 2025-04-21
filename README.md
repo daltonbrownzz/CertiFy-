@@ -1,12 +1,4 @@
 
- ________  _______   ________  _________  ___  ________ ___    ___ 
-|\   ____\|\  ___ \ |\   __  \|\___   ___\\  \|\  _____\\  \  /  /|
-\ \  \___|\ \   __/|\ \  \|\  \|___ \  \_\ \  \ \  \__/\ \  \/  / /
- \ \  \    \ \  \_|/_\ \   _  _\   \ \  \ \ \  \ \   __\\ \    / / 
-  \ \  \____\ \  \_|\ \ \  \\  \|   \ \  \ \ \  \ \  \_| \/  /  /  
-   \ \_______\ \_______\ \__\\ _\    \ \__\ \ \__\ \__\__/  / /    
-    \|_______|\|_______|\|__|\|__|    \|__|  \|__|\|__|\___/ /     
-                                                      \|___|/      
                                                                    
                                                                    
 
@@ -37,7 +29,7 @@ Clone or download the repository:
 bash
 Copy
 Edit
-git clone (https://github.com/daltonbrownzz/CertiFy).git
+git clone https://github.com/daltonbrownzz/CertiFy.git
 Manually copy the scripts and UI components to the appropriate locations in your Roblox game project.
 
 Customize the system according to your group’s needs.
