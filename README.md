@@ -1,4 +1,15 @@
 
+ ________  _______   ________  _________  ___  ________ ___    ___ 
+|\   ____\|\  ___ \ |\   __  \|\___   ___\\  \|\  _____\\  \  /  /|
+\ \  \___|\ \   __/|\ \  \|\  \|___ \  \_\ \  \ \  \__/\ \  \/  / /
+ \ \  \    \ \  \_|/_\ \   _  _\   \ \  \ \ \  \ \   __\\ \    / / 
+  \ \  \____\ \  \_|\ \ \  \\  \|   \ \  \ \ \  \ \  \_| \/  /  /  
+   \ \_______\ \_______\ \__\\ _\    \ \__\ \ \__\ \__\__/  / /    
+    \|_______|\|_______|\|__|\|__|    \|__|  \|__|\|__|\___/ /     
+                                                      \|___|/      
+                                                                   
+                                                                   
+
                                                                    
                                                                    
 
@@ -26,11 +37,6 @@ Run the installer, which will automatically set up all required scripts and UI e
 Option 2: Manual Installation
 Clone or download the repository:
 
-bash
-Copy
-Edit
-git clone https://github.com/daltonbrownzz/CertiFy.git
-Manually copy the scripts and UI components to the appropriate locations in your Roblox game project.
 
 Customize the system according to your group’s needs.
 
@@ -53,3 +59,4 @@ Contact
 For any questions or support, feel free to reach out to:
 
 Discord: @dalton_brownzz
+
