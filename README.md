@@ -1,3 +1,16 @@
+
+ ________  _______   ________  _________  ___  ________ ___    ___ 
+|\   ____\|\  ___ \ |\   __  \|\___   ___\\  \|\  _____\\  \  /  /|
+\ \  \___|\ \   __/|\ \  \|\  \|___ \  \_\ \  \ \  \__/\ \  \/  / /
+ \ \  \    \ \  \_|/_\ \   _  _\   \ \  \ \ \  \ \   __\\ \    / / 
+  \ \  \____\ \  \_|\ \ \  \\  \|   \ \  \ \ \  \ \  \_| \/  /  /  
+   \ \_______\ \_______\ \__\\ _\    \ \__\ \ \__\ \__\__/  / /    
+    \|_______|\|_______|\|__|\|__|    \|__|  \|__|\|__|\___/ /     
+                                                      \|___|/      
+                                                                   
+                                                                   
+
+
 CertiFy - Roblox Certification System
 CertiFy is a certification management system designed to help Roblox group administrators manage user certifications, track changes with audit logs, and ensure data persistence across games and sessions. With an easy-to-use interface, CertiFy offers a secure and transparent way to handle certifications within your group.
 
@@ -24,7 +37,7 @@ Clone or download the repository:
 bash
 Copy
 Edit
-git clone https://github.com/yourusername/CertiFy.git
+git clone (https://github.com/daltonbrownzz/CertiFy).git
 Manually copy the scripts and UI components to the appropriate locations in your Roblox game project.
 
 Customize the system according to your group’s needs.
@@ -47,6 +60,4 @@ Want to contribute? Feel free to fork the repository, but please be aware that m
 Contact
 For any questions or support, feel free to reach out to:
 
-Email: your.email@example.com
-
-Discord: @YourDiscordHandle
+Discord: @dalton_brownzz
