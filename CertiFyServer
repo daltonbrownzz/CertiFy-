@@ -1,0 +1,132 @@
+local Players = game:GetService("Players")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local HttpService = game:GetService("HttpService")
+
+-- Your GitHub whitelist URL
+local WHITELIST_URL = "https://raw.githubusercontent.com/daltonbrownzz/CertiFyWhitelist/refs/heads/main/whitelist.json"
+
+-- Load config
+local successConfig, Config = pcall(function()
+	return require(ReplicatedStorage:WaitForChild("CertiFyConfig"))
+end)
+if not successConfig then error("❌ Failed to load CertiFyConfig.") end
+
+-- Check if the group is whitelisted before continuing
+local function isGroupAuthorized(groupId)
+	local success, result = pcall(function()
+		return HttpService:GetAsync(WHITELIST_URL)
+	end)
+
+	if success then
+		local data = HttpService:JSONDecode(result)
+		for _, id in ipairs(data.groups) do
+			if id == groupId then
+				return true
+			end
+		end
+	else
+		warn("❌ Failed to fetch whitelist from GitHub.")
+	end
+
+	return false
+end
+
+-- Kick unauthorized players
+Players.PlayerAdded:Connect(function(player)
+	local groupId = Config.GroupId
+
+	if not isGroupAuthorized(groupId) then
+		player:Kick("❌ This group is not licensed to use CertiFy.")
+	end
+end)
+
+-- Load data module
+local successData, Data = pcall(function()
+	return require(script.Parent:WaitForChild("CertiFyData"))
+end)
+if not successData then error("❌ Failed to load CertiFyData.") end
+
+-- Setup remotes
+local RemotesFolder = ReplicatedStorage:FindFirstChild("CertiFyRemotes")
+if not RemotesFolder then error("❌ CertiFyRemotes folder missing in ReplicatedStorage.") end
+
+local RequestCerts = RemotesFolder:FindFirstChild("RequestCerts")
+local AddCert = RemotesFolder:FindFirstChild("AddCert")
+local RemoveCert = RemotesFolder:FindFirstChild("RemoveCert")
+local GetAuditLog = RemotesFolder:FindFirstChild("GetAuditLog")
+local NotifyClients = RemotesFolder:FindFirstChild("NotifyClients")
+
+if not (RequestCerts and AddCert and RemoveCert and GetAuditLog and NotifyClients) then
+	error("❌ One or more remote events/functions are missing in CertiFyRemotes.")
+end
+
+local AuditLog = {}
+
+-- Return all certified users
+RequestCerts.OnServerInvoke = function(player)
+	local success, data = pcall(function()
+		return Data.GetAllCertifiedUsers()
+	end)
+
+	if success then
+		return data
+	else
+		warn("❌ Failed to fetch all certifications.")
+		return {}
+	end
+end
+
+-- Add cert
+AddCert.OnServerEvent:Connect(function(player, userId, cert)
+	if typeof(userId) ~= "number" or typeof(cert) ~= "string" then
+		warn("❌ Invalid add cert request by:", player.Name)
+		return
+	end
+
+	local success = pcall(function()
+		Data.AddCert(userId, cert)
+	end)
+	if success then
+		table.insert(AuditLog, player.Name .. " added '" .. cert .. "' to userId " .. userId)
+		NotifyClients:FireAllClients()
+	else
+		warn("❌ Failed to add cert:", cert, "to", userId)
+	end
+end)
+
+-- Remove cert
+RemoveCert.OnServerEvent:Connect(function(player, userId, cert)
+	if typeof(userId) ~= "number" or typeof(cert) ~= "string" then
+		warn("❌ Invalid remove cert request by:", player.Name)
+		return
+	end
+
+	local success = pcall(function()
+		Data.RemoveCert(userId, cert)
+	end)
+	if success then
+		table.insert(AuditLog, player.Name .. " removed '" .. cert .. "' from userId " .. userId)
+		NotifyClients:FireAllClients()
+	else
+		warn("❌ Failed to remove cert:", cert, "from", userId)
+	end
+end)
+
+-- Audit log
+GetAuditLog.OnServerInvoke = function(player)
+	local MAX_ENTRIES = 50
+	local filteredLog = {}
+
+	for i = math.max(1, #AuditLog - MAX_ENTRIES + 1), #AuditLog do
+		table.insert(filteredLog, AuditLog[i])
+	end
+
+	return table.concat(filteredLog, "\n")
+end
+
+print("\n==========[ CertiFy System Loaded ]==========")
+print("✔️  Status: Initialized successfully")
+print("👤  Developer: dalton_brownzz")
+print("📦  Module: CertiFy Handler")
+print("🕒  Time: " .. os.date("%Y-%m-%d %H:%M:%S"))
+print("=============================================\n")
