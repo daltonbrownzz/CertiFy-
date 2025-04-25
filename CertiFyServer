@@ -1,44 +1,11 @@
 local Players = game:GetService("Players")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
-local HttpService = game:GetService("HttpService")
-
--- Your GitHub whitelist URL
-local WHITELIST_URL = "https://raw.githubusercontent.com/daltonbrownzz/CertiFyWhitelist/refs/heads/main/whitelist.json"
 
 -- Load config
 local successConfig, Config = pcall(function()
 	return require(ReplicatedStorage:WaitForChild("CertiFyConfig"))
 end)
 if not successConfig then error("❌ Failed to load CertiFyConfig.") end
-
--- Check if the group is whitelisted before continuing
-local function isGroupAuthorized(groupId)
-	local success, result = pcall(function()
-		return HttpService:GetAsync(WHITELIST_URL)
-	end)
-
-	if success then
-		local data = HttpService:JSONDecode(result)
-		for _, id in ipairs(data.groups) do
-			if id == groupId then
-				return true
-			end
-		end
-	else
-		warn("❌ Failed to fetch whitelist from GitHub.")
-	end
-
-	return false
-end
-
--- Kick unauthorized players
-Players.PlayerAdded:Connect(function(player)
-	local groupId = Config.GroupId
-
-	if not isGroupAuthorized(groupId) then
-		player:Kick("❌ This group is not licensed to use CertiFy.")
-	end
-end)
 
 -- Load data module
 local successData, Data = pcall(function()
