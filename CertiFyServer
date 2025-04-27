@@ -1,35 +1,28 @@
 
-      ___           ___           ___           ___                       ___           ___     
-     /\  \         /\  \         /\  \         /\  \          ___        /\  \         |\__\    
-    /::\  \       /::\  \       /::\  \        \:\  \        /\  \      /::\  \        |:|  |   
-   /:/\:\  \     /:/\:\  \     /:/\:\  \        \:\  \       \:\  \    /:/\:\  \       |:|  |   
-  /:/  \:\  \   /::\~\:\  \   /::\~\:\  \       /::\  \      /::\__\  /::\~\:\  \      |:|__|__ 
- /:/__/ \:\__\ /:/\:\ \:\__\ /:/\:\ \:\__\     /:/\:\__\  __/:/\/__/ /:/\:\ \:\__\     /::::\__\
- \:\  \  \/__/ \:\~\:\ \/__/ \/_|::\/:/  /    /:/  \/__/ /\/:/  /    \/__\:\ \/__/    /:/~~/~   
-  \:\  \        \:\ \:\__\      |:|::/  /    /:/  /      \::/__/          \:\__\     /:/  /     
-   \:\  \        \:\ \/__/      |:|\/__/     \/__/        \:\__\           \/__/     \/__/      
-    \:\__\        \:\__\        |:|  |                     \/__/                                
-     \/__/         \/__/         \|__|                                                          
-       by: @dalton_brownzz
-
 local Players = game:GetService("Players")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
--- Load config
+-- Load configuration module
 local successConfig, Config = pcall(function()
 	return require(ReplicatedStorage:WaitForChild("CertiFyConfig"))
 end)
-if not successConfig then error("❌ Failed to load CertiFyConfig.") end
+if not successConfig then
+	error("❌ Failed to load CertiFyConfig.")
+end
 
--- Load data module
+-- Load data management module
 local successData, Data = pcall(function()
 	return require(script.Parent:WaitForChild("CertiFyData"))
 end)
-if not successData then error("❌ Failed to load CertiFyData.") end
+if not successData then
+	error("❌ Failed to load CertiFyData.")
+end
 
--- Setup remotes
+-- Setup remote references
 local RemotesFolder = ReplicatedStorage:FindFirstChild("CertiFyRemotes")
-if not RemotesFolder then error("❌ CertiFyRemotes folder missing in ReplicatedStorage.") end
+if not RemotesFolder then
+	error("❌ CertiFyRemotes folder is missing in ReplicatedStorage.")
+end
 
 local RequestCerts = RemotesFolder:FindFirstChild("RequestCerts")
 local AddCert = RemotesFolder:FindFirstChild("AddCert")
@@ -41,9 +34,10 @@ if not (RequestCerts and AddCert and RemoveCert and GetAuditLog and NotifyClient
 	error("❌ One or more remote events/functions are missing in CertiFyRemotes.")
 end
 
+-- Audit log for certification actions
 local AuditLog = {}
 
--- Return all certified users
+-- Handle client request to fetch all certified users
 RequestCerts.OnServerInvoke = function(player)
 	local success, data = pcall(function()
 		return Data.GetAllCertifiedUsers()
@@ -52,48 +46,50 @@ RequestCerts.OnServerInvoke = function(player)
 	if success then
 		return data
 	else
-		warn("❌ Failed to fetch all certifications.")
+		warn("❌ Failed to fetch certification data.")
 		return {}
 	end
 end
 
--- Add cert
+-- Handle adding a certification
 AddCert.OnServerEvent:Connect(function(player, userId, cert)
 	if typeof(userId) ~= "number" or typeof(cert) ~= "string" then
-		warn("❌ Invalid add cert request by:", player.Name)
+		warn("❌ Invalid add certification request from:", player.Name)
 		return
 	end
 
 	local success = pcall(function()
 		Data.AddCert(userId, cert)
 	end)
+
 	if success then
 		table.insert(AuditLog, player.Name .. " added '" .. cert .. "' to userId " .. userId)
 		NotifyClients:FireAllClients()
 	else
-		warn("❌ Failed to add cert:", cert, "to", userId)
+		warn("❌ Failed to add certification:", cert, "to", userId)
 	end
 end)
 
--- Remove cert
+-- Handle removing a certification
 RemoveCert.OnServerEvent:Connect(function(player, userId, cert)
 	if typeof(userId) ~= "number" or typeof(cert) ~= "string" then
-		warn("❌ Invalid remove cert request by:", player.Name)
+		warn("❌ Invalid remove certification request from:", player.Name)
 		return
 	end
 
 	local success = pcall(function()
 		Data.RemoveCert(userId, cert)
 	end)
+
 	if success then
 		table.insert(AuditLog, player.Name .. " removed '" .. cert .. "' from userId " .. userId)
 		NotifyClients:FireAllClients()
 	else
-		warn("❌ Failed to remove cert:", cert, "from", userId)
+		warn("❌ Failed to remove certification:", cert, "from", userId)
 	end
 end)
 
--- Audit log
+-- Handle client request for audit logs
 GetAuditLog.OnServerInvoke = function(player)
 	local MAX_ENTRIES = 50
 	local filteredLog = {}
@@ -105,6 +101,7 @@ GetAuditLog.OnServerInvoke = function(player)
 	return table.concat(filteredLog, "\n")
 end
 
+-- System loaded successfully
 print("\n==========[ CertiFy System Loaded ]==========")
 print("✔️  Status: Initialized successfully")
 print("👤  Developer: dalton_brownzz")
