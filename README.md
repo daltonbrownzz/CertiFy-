@@ -4,10 +4,10 @@
 
                                                                    
                                                                  
-CertiFy - Roblox Certification System
+# CertiFy - Roblox Certification System
 CertiFy is a certification management system designed to help Roblox group administrators manage user certifications, track changes with audit logs, and ensure data persistence across games and sessions. With an easy-to-use interface, CertiFy offers a secure and transparent way to handle certifications within your group.
 
-Features
+# Features
 User Certification Management: Effortlessly assign and revoke certifications for users in your group.
 
 Audit Logs: Full history of actions taken, ensuring transparency and accountability.
@@ -16,7 +16,7 @@ Persistent Data: Certification data stays intact across different games and sess
 
 Customizable UI: A sleek, modern user interface for both admins and users, designed for ease of use.
 
-Installation
+# Installation
 Choose your preferred installation method:
 
 Option 1: Use the CertiFy Installer
@@ -25,12 +25,12 @@ Download the CertiFy Installer from the releases page.
 Run the installer, which will automatically set up all required scripts and UI elements in the correct locations.
 
 Option 2: Manual Installation
-Clone or download the repository:
+purchase the licsence from my discord
 
 
 Customize the system according to your group’s needs.
 
-Usage
+# Usage
 Once integrated into your game:
 
 Admins can add or remove certifications via the intuitive UI.
@@ -39,14 +39,14 @@ View the audit logs to track any changes made to certifications.
 
 Data is persistent across different games and sessions within your group.
 
-License
+# License
 This project is licensed under the CC BY-NC-ND 4.0 License. You may view and share the code but are not allowed to modify it.
 
-Contributing
+# Contributing
 Want to contribute? Feel free to fork the repository, but please be aware that modifications are not permitted under the current license.
 
 Contact
 For any questions or support, feel free to reach out to:
 
-Discord: @dalton_brownzz
+# Discord: @dalton_brownzz
 
