@@ -1,8 +1,20 @@
+--[[
+	==================================================
+	| Module: CertiFy Handler                        |
+	| Developer: dalton_brownzz                     |
+	| Description: Handles server-side certification|
+	|              data management, audit logging,  |
+	|              and remote event handling.       |
+	| System: CertiFy                                |
+	| Time:   os.date runtime                       |
+	==================================================
+]]
 
+--// Services
 local Players = game:GetService("Players")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
--- Load configuration module
+--// Load Configuration Module
 local successConfig, Config = pcall(function()
 	return require(ReplicatedStorage:WaitForChild("CertiFyConfig"))
 end)
@@ -10,7 +22,7 @@ if not successConfig then
 	error("❌ Failed to load CertiFyConfig.")
 end
 
--- Load data management module
+--// Load Data Management Module
 local successData, Data = pcall(function()
 	return require(script.Parent:WaitForChild("CertiFyData"))
 end)
@@ -18,7 +30,7 @@ if not successData then
 	error("❌ Failed to load CertiFyData.")
 end
 
--- Setup remote references
+--// Validate Remote Folder and References
 local RemotesFolder = ReplicatedStorage:FindFirstChild("CertiFyRemotes")
 if not RemotesFolder then
 	error("❌ CertiFyRemotes folder is missing in ReplicatedStorage.")
@@ -34,10 +46,10 @@ if not (RequestCerts and AddCert and RemoveCert and GetAuditLog and NotifyClient
 	error("❌ One or more remote events/functions are missing in CertiFyRemotes.")
 end
 
--- Audit log for certification actions
+--// Internal Audit Log
 local AuditLog = {}
 
--- Handle client request to fetch all certified users
+--// Remote: Fetch All Certified Users
 RequestCerts.OnServerInvoke = function(player)
 	local success, data = pcall(function()
 		return Data.GetAllCertifiedUsers()
@@ -51,7 +63,7 @@ RequestCerts.OnServerInvoke = function(player)
 	end
 end
 
--- Handle adding a certification
+--// Remote: Add Certification to a User
 AddCert.OnServerEvent:Connect(function(player, userId, cert)
 	if typeof(userId) ~= "number" or typeof(cert) ~= "string" then
 		warn("❌ Invalid add certification request from:", player.Name)
@@ -70,7 +82,7 @@ AddCert.OnServerEvent:Connect(function(player, userId, cert)
 	end
 end)
 
--- Handle removing a certification
+--// Remote: Remove Certification from a User
 RemoveCert.OnServerEvent:Connect(function(player, userId, cert)
 	if typeof(userId) ~= "number" or typeof(cert) ~= "string" then
 		warn("❌ Invalid remove certification request from:", player.Name)
@@ -89,7 +101,7 @@ RemoveCert.OnServerEvent:Connect(function(player, userId, cert)
 	end
 end)
 
--- Handle client request for audit logs
+--// Remote: Return Recent Audit Logs (Max 50)
 GetAuditLog.OnServerInvoke = function(player)
 	local MAX_ENTRIES = 50
 	local filteredLog = {}
@@ -101,7 +113,7 @@ GetAuditLog.OnServerInvoke = function(player)
 	return table.concat(filteredLog, "\n")
 end
 
--- System loaded successfully
+--// Final Load Message
 print("\n==========[ CertiFy System Loaded ]==========")
 print("✔️  Status: Initialized successfully")
 print("👤  Developer: dalton_brownzz")
