@@ -48,5 +48,6 @@ Want to contribute? Feel free to fork the repository, but please be aware that m
 Contact
 For any questions or support, feel free to reach out to:
 
-# Discord: @dalton_brownzz
+# Discord: @daltn.io
+
 
