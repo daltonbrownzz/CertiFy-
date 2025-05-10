@@ -1,9 +1,7 @@
-
-
 local DataStoreService = game:GetService("DataStoreService")
 local Players = game:GetService("Players")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
-
+local HttpService = game:GetService("HttpService")
 -- Load Config
 local Config = require(ReplicatedStorage:WaitForChild("CertiFyConfig"))
 
@@ -22,7 +20,7 @@ function CertiFyData.GetPlayerCerts(userId)
 	end)
 
 	if not success then
-		warn("? Failed to fetch certifications for userId:", userId, "Error:", data)
+		warn("❌ Failed to fetch certifications for userId:", userId, "Error:", data)
 	end
 
 	return (success and type(data) == "table") and data or {}
@@ -37,7 +35,7 @@ function CertiFyData.SavePlayerCerts(userId, certs)
 	end)
 
 	if not success then
-		warn("? Failed to save certifications for userId:", userId, "Error:", err)
+		warn("❌ Failed to save certifications for userId:", userId, "Error:", err)
 	end
 end
 
@@ -48,7 +46,7 @@ local function addUserIdToList(userId)
 	end)
 
 	if not success then
-		warn("? Failed to retrieve certified user list:", userList)
+		warn("❌ Failed to retrieve certified user list:", userList)
 		userList = {}
 	end
 
@@ -62,7 +60,7 @@ local function addUserIdToList(userId)
 		end)
 
 		if not saveSuccess then
-			warn("? Failed to update certified user list:", saveErr)
+			warn("❌ Failed to update certified user list:", saveErr)
 		end
 	end
 end
@@ -83,7 +81,7 @@ local function removeUserIdFromList(userId)
 			end)
 
 			if not saveSuccess then
-				warn("? Failed to update certified user list after removal:", saveErr)
+				warn("❌ Failed to update certified user list after removal:", saveErr)
 			end
 		end
 	end
@@ -99,7 +97,7 @@ function CertiFyData.AddCert(userId, cert)
 		table.insert(certs, cert)
 		CertiFyData.SavePlayerCerts(userId, certs)
 		addUserIdToList(userId)
-		print("? Added certification '" .. cert .. "' to userId:", userId)
+		print("✅ Added certification '" .. cert .. "' to userId:", userId)
 	end
 end
 
@@ -121,13 +119,13 @@ function CertiFyData.RemoveCert(userId, cert)
 			end)
 
 			if not success then
-				warn("? Failed to delete certifications for userId:", userId, "Error:", err)
+				warn("❌ Failed to delete certifications for userId:", userId, "Error:", err)
 			end
 
 			removeUserIdFromList(userId)
 		end
 
-		print("? Removed certification '" .. cert .. "' from userId:", userId)
+		print("✅ Removed certification '" .. cert .. "' from userId:", userId)
 	end
 end
 
@@ -140,7 +138,7 @@ function CertiFyData.GetAllCertifiedUsers()
 	end)
 
 	if not success then
-		warn("? Failed to retrieve certified user list:", userList)
+		warn("❌ Failed to retrieve certified user list:", userList)
 		return result
 	end
 
@@ -157,7 +155,7 @@ function CertiFyData.GetAllCertifiedUsers()
 				if nameSuccess then
 					table.insert(result, name .. ": " .. table.concat(certs, ", "))
 				else
-					warn("? Failed to retrieve player name for userId:", userId, "Error:", nameErr)
+					warn("❌ Failed to retrieve player name for userId:", userId, "Error:", nameErr)
 					table.insert(result, "UserId " .. userId .. ": " .. table.concat(certs, ", "))
 				end
 			end
@@ -166,5 +164,8 @@ function CertiFyData.GetAllCertifiedUsers()
 
 	return result
 end
+
+
+
 
 return CertiFyData
